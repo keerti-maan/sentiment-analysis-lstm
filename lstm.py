@@ -55,11 +55,10 @@ cm=confusion_matrix(df_test.true, df_test.pred)
 print(cm)
 print(classification_report(df_test.true, df_test.pred))
 
-twt = ['keep up the good work']
-twt = X_tokenizer.texts_to_sequences(twt)
-twt = pad_sequences(twt, maxlen=28, dtype='int32', value=0)
-print(twt)
-sentiment = model.predict(twt,batch_size=1,verbose = 2)
+text = ['keep up the good work']
+text = X_tokenizer.texts_to_sequences(text)
+text = pad_sequences(text, maxlen=28, dtype='int32', value=0)
+sentiment = model.predict(text,batch_size=1,verbose = 2)
 if(np.argmax(sentiment) == 0):
     print("negative")
 elif (np.argmax(sentiment) == 1):
