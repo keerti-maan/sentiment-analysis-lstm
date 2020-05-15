@@ -34,3 +34,16 @@ X_voc   =  X_tokenizer.num_words + 1
 X_train, X_test, y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=0,shuffle=True)
 print(X_train.shape,y_train.shape)
 print(X_test.shape,y_test.shape)
+
+##lstm model
+embed=128
+latent_dim=256
+model = Sequential()
+model.add(Embedding(X_voc, embed,input_length = X.shape[1]))
+model.add(SpatialDropout1D(0.4))
+model.add(LSTM(latent_dim, dropout=0.2, recurrent_dropout=0.2))
+model.add(Dense(2,activation='softmax'))
+model.compile(loss = 'categorical_crossentropy', optimizer='adam',metrics = ['accuracy'])
+print(model.summary())
+
+model.fit(X_train, y_train, epochs = 20, batch_size=128, verbose = 1)
