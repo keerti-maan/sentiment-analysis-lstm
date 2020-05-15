@@ -47,3 +47,20 @@ model.compile(loss = 'categorical_crossentropy', optimizer='adam',metrics = ['ac
 print(model.summary())
 
 model.fit(X_train, y_train, epochs = 20, batch_size=128, verbose = 1)
+
+y_pred = model.predict_classes(X_test,batch_size = 128)
+df_test = pd.DataFrame({'true': y_test, 'pred':y_pred})
+df_test['true'] = df_test['true'].apply(lambda x: np.argmax(x))
+cm=confusion_matrix(df_test.true, df_test.pred)
+print(cm)
+print(classification_report(df_test.true, df_test.pred))
+
+twt = ['keep up the good work']
+twt = X_tokenizer.texts_to_sequences(twt)
+twt = pad_sequences(twt, maxlen=28, dtype='int32', value=0)
+print(twt)
+sentiment = model.predict(twt,batch_size=1,verbose = 2)
+if(np.argmax(sentiment) == 0):
+    print("negative")
+elif (np.argmax(sentiment) == 1):
+    print("positive")
